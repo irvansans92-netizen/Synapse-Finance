@@ -1,11 +1,6 @@
-"use client";
-import { useState } from "react";
-import { BrowserProvider, Contract, parseEther } from "ethers";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { 
   Home, Box, ArrowDownCircle, ArrowUpCircle, BarChart2, 
-  ArrowLeftRight, History, Settings, Bell, ChevronDown, 
-  Lock, Wallet, TrendingUp, ShieldCheck 
 } from "lucide-react";
 
 const chartData = [
@@ -50,11 +45,10 @@ export default function Dashboard() {
   };
 
   return (
-    /* MIN-W-[1280px] INI YANG MEMAKSA TAMPILAN SELALU LEBAR SEPERTI LAPTOP */
-    <div className="flex min-w-[1280px] min-h-screen bg-[#0B0E14] text-white font-sans overflow-hidden">
+    <div className="flex min-h-screen bg-[#0B0E14] text-white font-sans overflow-hidden">
       
-      {/* LEFT SIDEBAR (SEKARANG DIPAKSA MUNCUL) */}
-      <aside className="w-64 bg-[#131722] border-r border-[#1E2330] flex flex-col justify-between p-6 h-screen overflow-y-auto shrink-0">
+      {/* LEFT SIDEBAR (Hidden on Mobile) */}
+      <aside className="w-64 bg-[#131722] border-r border-[#1E2330] hidden lg:flex flex-col justify-between p-6 h-screen overflow-y-auto">
         <div>
           <div className="flex items-center gap-3 mb-10">
             <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-xl">S</div>
@@ -82,8 +76,9 @@ export default function Dashboard() {
       </aside>
 
       {/* MIDDLE MAIN CONTENT */}
-      <main className="flex-1 p-8 h-screen overflow-y-auto custom-scrollbar">
-        <header className="flex justify-between items-center mb-8">
+      <main className="flex-1 p-6 md:p-8 h-screen overflow-y-auto custom-scrollbar">
+        {/* HEADER */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h2 className="text-2xl font-bold mb-1">Welcome back, Irvan 👋</h2>
             <p className="text-gray-400 text-sm">Here's what's happening with your vault today.</p>
@@ -95,7 +90,7 @@ export default function Dashboard() {
             </button>
             <button onClick={connectWallet} className="bg-[#131722] border border-[#1E2330] hover:border-blue-500 px-4 py-2 rounded-full flex items-center gap-3 transition-all">
               <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-500 to-purple-500"></div>
-              <div className="text-left block">
+              <div className="text-left hidden sm:block">
                 <p className="text-sm font-semibold leading-tight">{account ? account : "Connect Wallet"}</p>
                 <p className="text-[10px] text-gray-400">{account ? "Connected" : "Not connected"}</p>
               </div>
@@ -104,8 +99,8 @@ export default function Dashboard() {
           </div>
         </header>
 
-        {/* STATS ROW (DIPAKSA 4 KOLOM) */}
-        <div className="grid grid-cols-4 gap-4 mb-6">
+        {/* STATS ROW */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <StatCard title="Total Value Locked" amount="12,540" icon={<Lock size={20} className="text-blue-400"/>} perc="+ 12.5%" />
           <StatCard title="Your Balance" amount="250.00" icon={<Wallet size={20} className="text-purple-400"/>} perc="— 0.0%" color="text-gray-400" active />
           <StatCard title="Yield Earned (All Time)" amount="43.25" icon={<TrendingUp size={20} className="text-green-400"/>} perc="+ 8.7%" />
@@ -159,8 +154,8 @@ export default function Dashboard() {
         </div>
       </main>
 
-      {/* RIGHT SIDEBAR (SEKARANG DIPAKSA MUNCUL) */}
-      <aside className="w-80 bg-[#0B0E14] border-l border-[#1E2330] p-6 flex flex-col gap-6 overflow-y-auto shrink-0">
+      {/* RIGHT SIDEBAR (Wallet & Interaction) */}
+      <aside className="w-80 bg-[#0B0E14] border-l border-[#1E2330] p-6 hidden xl:flex flex-col gap-6 overflow-y-auto">
         <div className="bg-[#131722] rounded-2xl p-6 border border-[#1E2330]">
           <h3 className="font-bold mb-4">Your Wallet</h3>
           <p className="text-sm text-gray-400 mb-1">Wallet Balance</p>
